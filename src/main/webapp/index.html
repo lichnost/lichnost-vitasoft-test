@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="VitasoftTest">
+<head>
+    <meta charset="UTF-8">
+    <title>Vitasoft Test</title>
+
+    <script language="JavaScript" src="js/angular-1.2.16.js"></script>
+    <script language="JavaScript" src="js/ui-bootstrap-0.12.0.js"></script>
+    <script language="JavaScript" src="js/ui-grid.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-3.3.1.css">
+    <link rel="stylesheet" type="text/css" href="css/ui-grid.css">
+
+    <script language="JavaScript" src="js/Application.js"></script>
+</head>
+<body>
+<div ng-controller="VitasoftTestController">
+    <div id="driver-grid" ui-grid="driverGridOptions" external-scopes="driverGridOptions.externalScope"
+         style="width: 100%; height: 350px;"></div>
+
+    <div class="container-fluid" style="margin-top: 20px; width: 100%">
+        <input type="text" placeholder="Введите имя водителя"
+               ng-model="selectedDriver"
+               typeahead="driver.secondName + ' ' + driver.firstName + ' ' + driver.middleName for driver in searchDriver($viewValue)"
+               typeahead-min-length="2"
+               typeahead-on-select="onDriverSelect($item, $model, $label)"
+               class="form-control">
+
+        <div ng-show="driverForEdit != undefined">
+            <h4>Данные водителя</h4>
+            <h5>Фамилия</h5>
+            <input ng-model="driverForEdit.secondName" type="text"
+                   class="form-control">
+
+            <h5>Имя</h5>
+            <input ng-model="driverForEdit.firstName" type="text"
+                   class="form-control">
+
+            <h5>Отчество</h5>
+            <input ng-model="driverForEdit.middleName" type="text"
+                   class="form-control">
+
+            <h5>Пол</h5>
+            <label class="checkbox">
+                <input ng-model="driverForEdit.gender" type="radio" value="MALE"
+                       class="form-control" style="float: left; width: 15px; height: 15px;">
+                Мужской
+            </label>
+            <label class="checkbox">
+                <input ng-model="driverForEdit.gender" type="radio" value="FEMALE"
+                       class="form-control" style="float: left; width: 15px; height: 15px;">
+                Женский
+            </label>
+
+            <h5>Дата рождения</h5>
+            <input ng-model="driverForEdit.birthday" type="text"
+                   class="form-control"
+                   datepicker-popup="dd.MM.yyyy"
+                   current-text="Сегодня"
+                   clear-text="Очистить"
+                   close-text="Закрыть">
+
+            <h5>Лет</h5>
+            <input ng-value="calcAge()" type="text"
+                   class="form-control"
+                   ng-readonly="true">
+
+            <h5>Класс</h5>
+            <select ng-model="driverForEdit.driverClass.name" type="text"
+                    ng-options="class.name as class.name for class in classes"
+                    class="form-control"/>
+            <br>
+            <input type="button" style="float: left; width: 50%" value="Сохранить" class="form-control"
+                   ng-click="saveDriver()">
+            <input type="button" value="Отменить" class="form-control" style="width: 50%"
+                   ng-click="cancelSaveDriver()">
+        </div>
+    </div>
+</div>
+</body>
+</html>
